@@ -1,92 +1,74 @@
 /**
- * Use Case 2: Basic Room Types & Static Availability
+ * Use Case 3: Centralized Room Inventory Management
  *
- * Demonstrates abstraction, inheritance, polymorphism,
- * and simple availability variables.
+ * Demonstrates how a HashMap can be used to maintain
+ * a centralized inventory of room availability.
  *
  * @author Jai Aaditya
- * @version 2.1
+ * @version 3.1
  */
 
-// Abstract Room class
-abstract class Room {
+import java.util.HashMap;
 
-    protected String roomType;
-    protected int beds;
-    protected double price;
+// Inventory management class
+class RoomInventory {
 
-    public Room(String roomType, int beds, double price) {
-        this.roomType = roomType;
-        this.beds = beds;
-        this.price = price;
+    // HashMap storing room type and availability
+    private HashMap<String, Integer> inventory;
+
+    // Constructor initializes inventory
+    public RoomInventory() {
+        inventory = new HashMap<>();
+
+        inventory.put("Single Room", 10);
+        inventory.put("Double Room", 6);
+        inventory.put("Suite Room", 3);
     }
 
-    public void displayRoomDetails() {
-        System.out.println("Room Type : " + roomType);
-        System.out.println("Beds      : " + beds);
-        System.out.println("Price     : ₹" + price);
+    // Method to get availability of a room type
+    public int getAvailability(String roomType) {
+        return inventory.getOrDefault(roomType, 0);
     }
-}
 
-// Single Room class
-class SingleRoom extends Room {
-
-    public SingleRoom() {
-        super("Single Room", 1, 2000);
+    // Method to update availability
+    public void updateAvailability(String roomType, int newCount) {
+        inventory.put(roomType, newCount);
     }
-}
 
-// Double Room class
-class DoubleRoom extends Room {
+    // Display full inventory
+    public void displayInventory() {
+        System.out.println("\n--- Current Room Inventory ---");
 
-    public DoubleRoom() {
-        super("Double Room", 2, 3500);
-    }
-}
-
-// Suite Room class
-class SuiteRoom extends Room {
-
-    public SuiteRoom() {
-        super("Suite Room", 3, 6000);
+        for (String roomType : inventory.keySet()) {
+            System.out.println(roomType + " : " + inventory.get(roomType));
+        }
     }
 }
 
-// Main class (Application entry point)
+// Main class
 public class BookMyStayApp {
 
     public static void main(String[] args) {
 
         System.out.println("====================================");
-        System.out.println("        Book My Stay Application    ");
-        System.out.println("             Version 2.1            ");
+        System.out.println("       Book My Stay Application     ");
+        System.out.println("           Version 3.1              ");
         System.out.println("====================================");
 
-        // Polymorphic room objects
-        Room single = new SingleRoom();
-        Room doubleRoom = new DoubleRoom();
-        Room suite = new SuiteRoom();
+        // Initialize inventory system
+        RoomInventory inventory = new RoomInventory();
 
-        // Static availability variables
-        int singleAvailable = 10;
-        int doubleAvailable = 6;
-        int suiteAvailable = 3;
+        // Display current inventory
+        inventory.displayInventory();
 
-        System.out.println("\n--- Room Details ---");
+        // Example update
+        System.out.println("\nUpdating inventory for Single Room...");
 
-        single.displayRoomDetails();
-        System.out.println("Available : " + singleAvailable);
+        inventory.updateAvailability("Single Room", 8);
 
-        System.out.println();
+        // Display updated inventory
+        inventory.displayInventory();
 
-        doubleRoom.displayRoomDetails();
-        System.out.println("Available : " + doubleAvailable);
-
-        System.out.println();
-
-        suite.displayRoomDetails();
-        System.out.println("Available : " + suiteAvailable);
-
-        System.out.println("\nSystem execution completed.");
+        System.out.println("\nInventory system execution completed.");
     }
 }
